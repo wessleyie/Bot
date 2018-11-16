@@ -1,8 +1,11 @@
+import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
+//import org.openqa.selenium.JavascriptExecutor;
 
 public class Log {
 	
 	public static void Login() throws InterruptedException{
+		//JavascriptExecutor jse = ((JavascriptExecutor) Browser.webdriver);
 		String username = "sylrotten";
 		String password = "lisasolarcar";
 		
@@ -13,23 +16,34 @@ public class Log {
 		Browser.webdriver.findElement(By.name("password")).sendKeys(password);
 		Browser.webdriver.findElement(By.name("password")).submit();
 		
-		Thread.sleep(3000);
+		Browser.webdriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		
-		Browser.webdriver.findElement(By.xpath("//*[@id='react-root']/section/main/div/button")).click();
+		//Gets rid of annoying pop ups
+		try {
+			Browser.webdriver.findElement(By.cssSelector("#react-root > section > main > div > button")).click();
+			Browser.webdriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		} catch (Exception e){
+			System.out.println("Pop up not found.");
+		}
 		
-		Thread.sleep(3000);
+		try {
+			Browser.webdriver.findElement(By.cssSelector("body > div:nth-child(15) > div > div > div > div.mt3GC > button.aOOlW.HoLwm")).click();
+			Browser.webdriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		} catch (Exception e){
+			System.out.println("Pop up not found.");
+		}
 		
-		Browser.webdriver.switchTo().alert().dismiss();
-		
-		System.out.println("Log in successful.");
+		//jse.executeScript("window.scrollBy(0,250)", "");
+		//Browser.webdriver.findElement(By.cssSelector("#react-root > section > main > div > button")).click();
+		System.out.println("Login was successful.");
 	}
 	
 	public static void Logout() throws InterruptedException{
 		Browser.webdriver.findElement(By.xpath("//*[@id='react-root']/section/nav/div[2]/div/div/div[3]/div/div[3]/a")).click();
-		Thread.sleep(1000);
+		Browser.webdriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		Browser.webdriver.findElement(By.xpath("//*[@id='react-root']/section/main/div/header/section/div[1]/div/button/span")).click();
-		Thread.sleep(1000);
+		Browser.webdriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		Browser.webdriver.findElement(By.xpath("/html/body/div[3]/div/div/div/div/button[6]")).click();
-		System.out.println("////////You have been logged out////////");
+		System.out.println("Logout was successful.");
 	}
 }

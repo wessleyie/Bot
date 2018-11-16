@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -12,10 +13,12 @@ public class Liking {
 		int amount = key.nextInt();
 
 		Browser.webdriver.get("https://www.instagram.com");
-		Thread.sleep(500);
+		Browser.webdriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		
+		Browser.webdriver.findElement(By.cssSelector("body > div:nth-child(12) > div > div > div > div.mt3GC > button.aOOlW.HoLwm")).click();
 
 		for (int x = 1; x <= amount; x++){
-				Thread.sleep(500);
+			Browser.webdriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
 				WebElement likebutton = Browser.webdriver.findElement(By.cssSelector("span [aria-label='Like']"));
 				String scrollElementIntoMiddle = "var viewPortHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);"
@@ -23,12 +26,12 @@ public class Liking {
                         + "window.scrollBy(0, elementTop-(viewPortHeight/2));";
 
 				((JavascriptExecutor) Browser.webdriver).executeScript(scrollElementIntoMiddle, likebutton);
-				Thread.sleep(1500);
+				Browser.webdriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 				likebutton.click();
 
 			if (x >= amount){
 				System.out.println("You have liked " + amount + " posts.");
-				Thread.sleep(1500);
+				Browser.webdriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 				Browser.webdriver.navigate().refresh();
 			}
 		}
